@@ -13,6 +13,13 @@
 
 Dépôt centralisé d'images Docker. Chaque dossier contient un `Dockerfile`. Un workflow GitHub Actions construit et publie automatiquement les images sur **GHCR** lors d'un push sur `main`.
 
+## 📦 Créer une image
+Chaque dossier représente une image Docker. En comitant sur `main`, les images sont construites et publiées automatiquement.
+
+Le `README.md` dans le dossier décrit l'image et ses usages.
+
+Si le dossier commence par un underscore `_`, l'image est publiée en tant que dépendance privée.
+
 ## 🚀 Utilisation
 
 ```bash
@@ -25,15 +32,6 @@ docker run -it -v $(pwd):/workspace ghcr.io/<USERNAME>/python-dev:latest
 ```
 
 **Tags disponibles** : `latest`, `main`, `main-<sha>`
-
-## ⚙️ Configuration
-
-1. Activez les packages GitHub sur votre dépôt
-2. Configurez la visibilité des packages dans les settings
-3. Pour les images privées, créez un PAT avec `read:packages` :
-```bash
-echo "VOTRE_TOKEN" | docker login ghcr.io -u <USERNAME> --password-stdin
-```
 
 ## 🛠️ Images disponibles
 - `c-compile`: Outils de compilation C/C++ (gcc, g++, make, cmake)
