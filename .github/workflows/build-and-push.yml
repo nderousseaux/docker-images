@@ -57,6 +57,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Read README description
+        id: readme
+        run: |
+          README_PATH="./${{ matrix.directory }}/README.md"
+          if [ -f "$README_PATH" ]; then
+            # Extraire le titre (première ligne avec #)
+            TITLE=$(grep "^#" "$README_PATH" | head -n 1 | sed 's/^#* *//')
+            # Extraire la description (première ligne non vide après le titre)
+            DESCRIPTION=$(grep -v "^#" "$README_PATH" | grep -v "^$" | grep -v "^<!--" | head -n 1 | sed 's/^[[:space:]]*//')
+            echo "title=$TITLE" >> $GITHUB_OUTPUT
+            echo "description=$DESCRIPTION" >> $GITHUB_OUTPUT
+          else
+            echo "title=${{ matrix.directory }}" >> $GITHUB_OUTPUT
+            echo "description=Docker image for ${{ matrix.directory }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Extract metadata (tags, labels)
         id: meta
         uses: docker/metadata-action@v5
@@ -67,6 +83,10 @@ jobs:
             type=ref,event=pr
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.image.title=${{ steps.readme.outputs.title }}
+            org.opencontainers.image.description=${{ steps.readme.outputs.description }}
+            org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/main/${{ matrix.directory }}/README.md
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -78,39 +98,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
-
-      - name: Update package README
-        if: github.event_name != 'pull_request'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PACKAGE_NAME="${{ matrix.directory }}"
-          README_PATH="./${{ matrix.directory }}/README.md"
-          
-          if [ -f "$README_PATH" ]; then
-            echo "📝 Updating package README from $README_PATH..."
-            
-            # Lire le contenu du README et l'encoder en base64
-            README_CONTENT=$(cat "$README_PATH" | base64)
-            
-            # Mettre à jour le README via l'API GitHub
-            gh api \
-              --method PATCH \
-              -H "Accept: application/vnd.github+json" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              "/orgs/${{ github.repository_owner }}/packages/container/$PACKAGE_NAME" \
-              -f "readme=$(echo "$README_CONTENT" | base64 -d)" 2>/dev/null || \
-            gh api \
-              --method PATCH \
-              -H "Accept: application/vnd.github+json" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              "/users/${{ github.repository_owner }}/packages/container/$PACKAGE_NAME" \
-              -f "readme=$(cat "$README_PATH")"
-            
-            echo "✅ README updated for package $PACKAGE_NAME"
-          else
-            echo "⚠️  No README.md found in ${{ matrix.directory }}"
-          fi
 
       - name: Image published
         if: github.event_name != 'pull_request'
