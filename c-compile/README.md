@@ -3,12 +3,16 @@
 Docker image with essential tools for compiling and debugging C/C++ programs.
 
 ## 📦 Contents
-
-- **gcc/g++**: GNU C/C++ compilers (latest version)
+- **gcc**: GNU C compiler
 - **make**: Build automation tool
-- **cmake**: Cross-platform build system
-- **gdb**: GNU debugger
-- **build-essential**: Essential development tools
+- **git**: Version control system
+- **valgrind**: Memory debugging and profiling tool
+- **bc**: Arbitrary precision calculator
+- **vim**: Text editor
+- **gdb**: GNU debugger (via unminimize)
+- **man pages**: Comprehensive manual pages (POSIX & development)
+- **libpcap-dev**: Packet capture library for network programming
+- **Additional utilities**: time, psmisc, bsdextrautils
 
 ## 🚀 Usage
 ```bash

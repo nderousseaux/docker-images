@@ -1,15 +1,16 @@
-FROM gcc:latest
+FROM ubuntu:25.04
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Installation des outils de build
-RUN apt-get update && apt-get install -y \
-    make \
-    cmake \
-    build-essential \
-    gdb \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update 
 
-# Définir le répertoire de travail
-WORKDIR /app
+RUN apt install -qy unminimize \
+    && yes | unminimize
 
-# Par défaut, ouvrir un shell
-CMD ["/bin/bash"]
+RUN apt install -qy make git gcc valgrind bc vim time \
+    psmisc bsdextrautils locales wget \
+    man manpages manpages-posix manpages-dev manpages-posix-dev \
+    libpcap-dev
+
+ENV LC_ALL C.utf8
+CMD bash
+
