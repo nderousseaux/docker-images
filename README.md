@@ -4,40 +4,34 @@
 
 # <div align="center">Docker Images Registry</div>
 <div align="center">
-    <samp>Dépôt d'images Docker personnalisées, publiées automatiquement sur GitHub Container Registry</samp>
+    <samp>Custom Docker images repository, automatically published to GitHub Container Registry</samp>
 </div>
 
 <hr>
 
-## ℹ️ À propos
+## ℹ️ About
 
-Dépôt centralisé d'images Docker. Chaque dossier contient un `Dockerfile`. Un workflow GitHub Actions construit et publie automatiquement les images sur **GHCR** lors d'un push sur `main`.
+Centralized repository of Docker images. Each folder contains a `Dockerfile`. A GitHub Actions workflow automatically builds and publishes images to **GHCR** when pushing to `main`.
 
-## 📦 Créer une image
-Chaque dossier représente une image Docker. En comitant sur `main`, les images sont construites et publiées automatiquement.
+## 📦 Creating an Image
+Each folder represents a Docker image. When committing to `main`, images are automatically built and published.
 
-Le `README.md` dans le dossier décrit l'image et ses usages.
+The `README.md` in the folder describes the image and its usage.
 
-Si le dossier commence par un underscore `_`, l'image est publiée en tant que dépendance privée.
+If the folder starts with an underscore `_`, the image is published as a private dependency.
 
-## 🚀 Utilisation
+## 🚀 Usage
 
 ```bash
-# Télécharger une image
-docker pull ghcr.io/<USERNAME>/<DOSSIER>:latest
+# Pull an image
+docker pull ghcr.io/<USERNAME>/<FOLDER>:latest
 
-# Lancer un conteneur
+# Run a container
 docker run -it ghcr.io/<USERNAME>/alpine-tools:latest
 docker run -it -v $(pwd):/workspace ghcr.io/<USERNAME>/python-dev:latest
 ```
 
-**Tags disponibles** : `latest`, `main`, `main-<sha>`
+**Available tags**: `latest`, `main`, `main-<sha>`
 
-## 🛠️ Images disponibles
-- `c-compile`: Outils de compilation C/C++ (gcc, g++, make, cmake)
-
-## 📊 Voir vos images
-
-```
-https://github.com/<USERNAME>?tab=packages
-```
+## 🛠️ Available Images
+- `c-compile`: C/C++ compilation tools (gcc, g++, make, cmake)
