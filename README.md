@@ -36,6 +36,20 @@ docker run -it -v $(pwd):/workspace ghcr.io/<USERNAME>/python-dev:latest
 ## 🛠️ Available Images
 - `c-compile`: C/C++ compilation tools (gcc, g++, make, cmake) [see details](./c-compile/README.md)
 
-<!-- ## To improve -->
+## ⚡ Helper Script
+A `pdock` script simplifies usage:
+
+```bash
+# Open shell
+pdock c-compile it
+
+# Run command
+pdock c-compile exec make
+```
+
+Auto-mounts current directory to `/app`. Uses `git config user.name` for `<USERNAME>`, or specify with `-u`. Use `--pull` to ensure the latest image is used.
+
+**Install**: `mv pdock.sh ~/bin/pdock && chmod +x ~/bin/pdock`
+
 ## ❓ To improve
 It's currently impossible to assign a specific readme to each image in the repository. When Github implements this feature, each image will have its own detailed documentation. Without it, each image contains a basic `README.md` in its folder, describing its contents and usage.
