@@ -34,4 +34,8 @@ docker run -it -v $(pwd):/workspace ghcr.io/<USERNAME>/python-dev:latest
 **Available tags**: `latest`, `main`, `main-<sha>`
 
 ## 🛠️ Available Images
-- `c-compile`: C/C++ compilation tools (gcc, g++, make, cmake)
+- `c-compile`: C/C++ compilation tools (gcc, g++, make, cmake) [see details](./c-compile/README.md)
+
+<!-- ## To improve -->
+## ❓ To improve
+It's currently impossible to assign a specific readme to each image in the repository. When Github implements this feature, each image will have its own detailed documentation. Without it, each image contains a basic `README.md` in its folder, describing its contents and usage.
