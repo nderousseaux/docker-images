@@ -18,7 +18,7 @@ Each folder represents a Docker image. When committing to `main`, images are aut
 
 The `README.md` in the folder describes the image and its usage.
 
-If the folder starts with an underscore `_`, the image is published as a private dependency.
+Images inherit the visibility of the repository (public or private).
 
 ## 🚀 Usage
 

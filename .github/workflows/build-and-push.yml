@@ -68,18 +68,6 @@ jobs:
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Determine visibility
-        id: visibility
-        run: |
-          # Si le dossier commence par _, l'image est privée
-          if [[ "${{ matrix.directory }}" == _* ]]; then
-            echo "visibility=private" >> $GITHUB_OUTPUT
-            echo "📦 Image will be PRIVATE"
-          else
-            echo "visibility=public" >> $GITHUB_OUTPUT
-            echo "🌍 Image will be PUBLIC"
-          fi
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -91,25 +79,10 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64
 
-      - name: Set package visibility
-        if: github.event_name != 'pull_request'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PACKAGE_NAME="${{ matrix.directory }}"
-          VISIBILITY="${{ steps.visibility.outputs.visibility }}"
-          
-          echo "Setting $PACKAGE_NAME to $VISIBILITY..."
-          
-          # Note: La visibilité doit être configurée manuellement dans les settings GitHub
-          # ou via l'API GitHub avec un PAT ayant les permissions appropriées
-          echo "⚠️  Reminder: Set package visibility to $VISIBILITY in GitHub settings"
-          echo "   https://github.com/${{ github.repository }}/packages"
-
       - name: Image published
         if: github.event_name != 'pull_request'
         run: |
-          echo "✅ Image published (${{ steps.visibility.outputs.visibility }}):"
+          echo "✅ Image published (visibility inherited from repository):"
           echo "${{ steps.meta.outputs.tags }}" | while read tag; do
             echo "  - $tag"
           done
